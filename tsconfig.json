@@ -1,0 +1,23 @@
+{
+  // https://www.typescriptlang.org/tsconfig
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext"],
+
+    "declaration": false,
+    "sourceMap": false,
+
+    "rootDir": ".",
+    "baseUrl": ".",
+    "moduleResolution": "bundler",
+    "paths": {
+      "src/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+  ]
+}

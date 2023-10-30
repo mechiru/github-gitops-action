@@ -1,0 +1,21 @@
+name: GitHub GitOps
+description: GitOps action for GitHub.
+author: mechiru
+
+inputs:
+  organization:
+    description: Target GitHub organization name.
+    default: ${{ github.repository_owner }}
+  token:
+    description: GitHub API token.
+    required: true
+  file:
+    description: GitHub config file path.
+    default: github.yml
+  dry-run:
+    description: Whether to enable dry run mode.
+    default: 'false'
+
+runs:
+  using: node20
+  main: dist/main.mjs

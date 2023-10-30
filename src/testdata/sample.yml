@@ -1,0 +1,12 @@
+members:
+  - login: foo
+    email: foo@mail.com
+    role: admin
+  - login: bar
+    email: bar@mail.com
+    role: member
+    meta:
+      some-service: someid
+  - login: hoge
+    email: hoge@mail.com
+    role: member
