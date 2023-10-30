@@ -16,6 +16,10 @@ inputs:
     description: Whether to enable dry run mode.
     default: 'false'
 
+outputs:
+  result:
+    description: JSON string of GitOps result.
+
 runs:
   using: node20
   main: dist/main.mjs
