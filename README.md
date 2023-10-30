@@ -1,5 +1,33 @@
 # GitHub GitOps Action
 
+
+## Usage
+
+```yaml
+name: GitHub GitOps
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mechiru/github-gitops-action@main
+        with:
+          organization: your-organization-name      # Default is `${{ github.repository_owner }}`.
+          token: ${{ secrets.MY_GITHUB_API_TOKEN }}
+          file: github.yml                          # Default is `github.yml`.
+          dry-run: true                             # Default is `false`.
+```
+
+Please see [action.yml](./action.yml) file.
+
+
 ## Config file schema
 
 ```yaml
