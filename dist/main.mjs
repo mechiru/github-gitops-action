@@ -25171,8 +25171,8 @@ class SyncService {
     async asyncAll() {
         const teams = await this.syncTeams();
         const members = await this.syncOrganizationMembers();
-        const repositoryCollaborators = await this.syncRepositoryCollaborators();
         const repositories = await this.syncOrganizationRepositories();
+        const repositoryCollaborators = await this.syncRepositoryCollaborators();
         const teamMembers = await this.syncTeamMembers();
         const teamRepositories = await this.syncTeamRepositories();
         return {
