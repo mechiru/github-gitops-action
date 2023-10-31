@@ -25254,7 +25254,7 @@ class SyncService {
     async syncOrganizationRepositories() {
         const desired = this.config.listRepository();
         const current = await this.client.listOrganizationRepository({ withCollaborator: false });
-        const { add, sub, notEq } = diff(desired, current, c => c.name, (d, c) => d.name === c.name && d.description === c.description && d.visibility === c.visibility);
+        const { add, sub, notEq } = diff(desired, current, c => c.name, (d, c) => d.name === c.name && d.description == c.description && d.visibility === c.visibility);
         for (const d of add) {
             coreExports.info(`[sync/syncOrganizationRepositories] add organization repository: repository=${JSON.stringify(d)}`);
             await this.client.createOrganizationRepository(d);
@@ -25275,7 +25275,7 @@ class SyncService {
     async syncTeams() {
         const desired = this.config.listTeam();
         const current = await this.client.listTeam();
-        const { add, sub, notEq } = diff(desired, current, c => c.name, (d, c) => d.name === c.name && d.description === c.description && d.visibility === c.privacy);
+        const { add, sub, notEq } = diff(desired, current, c => c.name, (d, c) => d.name === c.name && d.description == c.description && d.visibility === c.privacy);
         for (const d of add) {
             coreExports.info(`[sync/syncTeams] add team: team=${JSON.stringify(d)}`);
             await this.client.createTeam({ ...d, privacy: d.visibility });
