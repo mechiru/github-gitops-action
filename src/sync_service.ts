@@ -133,7 +133,7 @@ export class SyncService {
       desired,
       current,
       c => c.name,
-      (d, c) => d.name === c.name && d.description === c.description && d.visibility === c.visibility
+      (d, c) => d.name === c.name && d.description == c.description && d.visibility === c.visibility
     );
 
     for (const d of add) {
@@ -167,7 +167,7 @@ export class SyncService {
       desired,
       current,
       c => c.name,
-      (d, c) => d.name === c.name && d.description === c.description && d.visibility === c.privacy
+      (d, c) => d.name === c.name && d.description == c.description && d.visibility === c.privacy
     );
 
     for (const d of add) {
