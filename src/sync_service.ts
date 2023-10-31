@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import {ConfigAccessor} from 'src/config_accessor';
 import {GitHubClient} from 'src/github_client';
+import {RepositoryPermission} from 'src/config';
 
 export class SyncService {
   private teamSynced = false;
@@ -13,8 +14,8 @@ export class SyncService {
   async asyncAll() {
     const teams = await this.syncTeams();
     const members = await this.syncOrganizationMembers();
-    const repositoryCollaborators = await this.syncRepositoryCollaborators();
     const repositories = await this.syncOrganizationRepositories();
+    const repositoryCollaborators = await this.syncRepositoryCollaborators();
     const teamMembers = await this.syncTeamMembers();
     const teamRepositories = await this.syncTeamRepositories();
 
@@ -84,7 +85,7 @@ export class SyncService {
       core.info(`[sync/syncOutsideCollaborators] repository=${JSON.stringify(repo)}`);
 
       const {add, sub, notEq} = diff(
-        desired.get(repo.name) ?? new Map(),
+        desired.get(repo.name) ?? new Map<string, {login: string; permission: RepositoryPermission}>(),
         repo.collaborators,
         c => c.login,
         (d, c) => d.login === c.login && d.permission === c.permission
