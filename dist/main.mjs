@@ -35481,16 +35481,9 @@ class GitHubClient {
             affiliation,
         });
         const collaborators = resp.map(x => {
-            let permission = RepositoryPermission.push;
-            for (const key of Object.values(RepositoryPermission)) {
-                if ((x.permissions ?? {})[key]) {
-                    permission = key;
-                    break;
-                }
-            }
             return {
                 login: x.login,
-                permission: permission,
+                permission: toRepositoryPermission(x.permissions),
             };
         });
         if (coreExports.isDebug()) {
@@ -35598,7 +35591,7 @@ class GitHubClient {
         return repos.map(x => ({
             id: x.id,
             name: x.name,
-            permission: x.role_name,
+            permission: toRepositoryPermission(x.permissions),
         }));
     }
     // https://docs.github.com/en/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
@@ -35679,6 +35672,24 @@ class GitHubClient {
         });
         coreExports.info(`[client/removeTeamMember/dryRun] removed team member: member=${JSON.stringify(input)}`);
     }
+}
+function toRepositoryPermission(permissions) {
+    if (permissions?.admin) {
+        return RepositoryPermission.admin;
+    }
+    if (permissions?.maintain) {
+        return RepositoryPermission.maintain;
+    }
+    if (permissions?.push) {
+        return RepositoryPermission.push;
+    }
+    if (permissions?.triage) {
+        return RepositoryPermission.triage;
+    }
+    if (permissions?.pull) {
+        return RepositoryPermission.pull;
+    }
+    throw new Error('[client] failed to convert repository permission: ${JSON.stringify(permissions)}');
 }
 
 function parseInput() {
