@@ -290,17 +290,9 @@ export class GitHubClient implements ClientInterface {
     });
 
     const collaborators = resp.map(x => {
-      let permission: RepositoryPermission = RepositoryPermission.push;
-      for (const key of Object.values(RepositoryPermission)) {
-        if ((x.permissions ?? {})[key]) {
-          permission = key;
-          break;
-        }
-      }
-
       return {
         login: x.login,
-        permission: permission,
+        permission: toRepositoryPermission(x.permissions),
       };
     });
 
@@ -437,7 +429,7 @@ export class GitHubClient implements ClientInterface {
     return repos.map(x => ({
       id: x.id,
       name: x.name,
-      permission: x.role_name as RepositoryPermission,
+      permission: toRepositoryPermission(x.permissions),
     }));
   }
 
@@ -532,4 +524,29 @@ export class GitHubClient implements ClientInterface {
     });
     core.info(`[client/removeTeamMember/dryRun] removed team member: member=${JSON.stringify(input)}`);
   }
+}
+
+function toRepositoryPermission(permissions?: {
+  pull?: boolean;
+  triage?: boolean;
+  push?: boolean;
+  maintain?: boolean;
+  admin?: boolean;
+}): RepositoryPermission {
+  if (permissions?.admin) {
+    return RepositoryPermission.admin;
+  }
+  if (permissions?.maintain) {
+    return RepositoryPermission.maintain;
+  }
+  if (permissions?.push) {
+    return RepositoryPermission.push;
+  }
+  if (permissions?.triage) {
+    return RepositoryPermission.triage;
+  }
+  if (permissions?.pull) {
+    return RepositoryPermission.pull;
+  }
+  throw new Error('[client] failed to convert repository permission: ${JSON.stringify(permissions)}');
 }
