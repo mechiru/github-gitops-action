@@ -11,7 +11,7 @@ export class SyncService {
     private readonly config: ConfigAccessor
   ) {}
 
-  async asyncAll() {
+  async syncAll() {
     const teams = await this.syncTeams();
     const members = await this.syncOrganizationMembers();
     const repositories = await this.syncOrganizationRepositories();

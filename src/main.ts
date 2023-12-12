@@ -14,7 +14,7 @@ async function main(): Promise<void> {
 
     const client = new GitHubClient(input);
     const config = new ConfigAccessor(await readConfigFile(input.file));
-    const result = await new SyncService(client, config).asyncAll();
+    const result = await new SyncService(client, config).syncAll();
     if (core.isDebug()) {
       core.info(`[main] result=${JSON.stringify(result, null, 2)}`);
     }
