@@ -533,20 +533,18 @@ function toRepositoryPermission(permissions?: {
   maintain?: boolean;
   admin?: boolean;
 }): RepositoryPermission {
-  if (permissions?.admin) {
-    return RepositoryPermission.admin;
+  switch (true) {
+    case permissions?.admin:
+      return RepositoryPermission.admin;
+    case permissions?.maintain:
+      return RepositoryPermission.maintain;
+    case permissions?.push:
+      return RepositoryPermission.push;
+    case permissions?.triage:
+      return RepositoryPermission.triage;
+    case permissions?.pull:
+      return RepositoryPermission.pull;
+    default:
+      throw new Error('[client] failed to convert repository permission: ${JSON.stringify(permissions)}');
   }
-  if (permissions?.maintain) {
-    return RepositoryPermission.maintain;
-  }
-  if (permissions?.push) {
-    return RepositoryPermission.push;
-  }
-  if (permissions?.triage) {
-    return RepositoryPermission.triage;
-  }
-  if (permissions?.pull) {
-    return RepositoryPermission.pull;
-  }
-  throw new Error('[client] failed to convert repository permission: ${JSON.stringify(permissions)}');
 }
