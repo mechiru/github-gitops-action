@@ -331,7 +331,7 @@ export class GitHubClient implements ClientInterface {
     return this.addOrUpdateRepositoryCollaborator('add', input);
   }
 
-  async updateRepositoryCollaborator(input: UpdateCollaborator): Promise<void> {
+  updateRepositoryCollaborator(input: UpdateCollaborator): Promise<void> {
     return this.addOrUpdateRepositoryCollaborator('update', input);
   }
 
