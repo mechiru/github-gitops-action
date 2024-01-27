@@ -35502,7 +35502,7 @@ class GitHubClient {
             owner: this.default.org,
             repo: input.repository,
             username: input.login,
-            premission: input.permission,
+            permission: input.permission,
         });
         coreExports.info(`[client/addOrUpdateRepositoryCollaborator] ${op} collaborator: collaborator=${JSON.stringify(input)}`);
     }
