@@ -25168,7 +25168,7 @@ class SyncService {
         this.client = client;
         this.config = config;
     }
-    async asyncAll() {
+    async syncAll() {
         const teams = await this.syncTeams();
         const members = await this.syncOrganizationMembers();
         const repositories = await this.syncOrganizationRepositories();
@@ -35509,7 +35509,7 @@ class GitHubClient {
     addRepositoryCollaborator(input) {
         return this.addOrUpdateRepositoryCollaborator('add', input);
     }
-    async updateRepositoryCollaborator(input) {
+    updateRepositoryCollaborator(input) {
         return this.addOrUpdateRepositoryCollaborator('update', input);
     }
     // https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#remove-a-repository-collaborator
@@ -35674,22 +35674,20 @@ class GitHubClient {
     }
 }
 function toRepositoryPermission(permissions) {
-    if (permissions?.admin) {
-        return RepositoryPermission.admin;
+    switch (true) {
+        case permissions?.admin:
+            return RepositoryPermission.admin;
+        case permissions?.maintain:
+            return RepositoryPermission.maintain;
+        case permissions?.push:
+            return RepositoryPermission.push;
+        case permissions?.triage:
+            return RepositoryPermission.triage;
+        case permissions?.pull:
+            return RepositoryPermission.pull;
+        default:
+            throw new Error('[client] failed to convert repository permission: ${JSON.stringify(permissions)}');
     }
-    if (permissions?.maintain) {
-        return RepositoryPermission.maintain;
-    }
-    if (permissions?.push) {
-        return RepositoryPermission.push;
-    }
-    if (permissions?.triage) {
-        return RepositoryPermission.triage;
-    }
-    if (permissions?.pull) {
-        return RepositoryPermission.pull;
-    }
-    throw new Error('[client] failed to convert repository permission: ${JSON.stringify(permissions)}');
 }
 
 function parseInput() {
@@ -35790,7 +35788,7 @@ async function main() {
         }
         const client = new GitHubClient(input);
         const config = new ConfigAccessor(await readConfigFile(input.file));
-        const result = await new SyncService(client, config).asyncAll();
+        const result = await new SyncService(client, config).syncAll();
         if (coreExports.isDebug()) {
             coreExports.info(`[main] result=${JSON.stringify(result, null, 2)}`);
         }
