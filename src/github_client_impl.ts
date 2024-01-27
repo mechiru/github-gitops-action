@@ -322,7 +322,7 @@ export class GitHubClient implements ClientInterface {
       owner: this.default.org,
       repo: input.repository,
       username: input.login,
-      premission: input.permission,
+      permission: input.permission,
     });
     core.info(`[client/addOrUpdateRepositoryCollaborator] ${op} collaborator: collaborator=${JSON.stringify(input)}`);
   }
